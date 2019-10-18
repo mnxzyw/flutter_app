@@ -20,7 +20,15 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        "/": (context) => MyHomePage(title: 'Flutter Demo Home Page'),
+        //注册首页路由
+        "new_page": (context) => EchoRoute(),
+        "tip_route": (context) {
+          return TipRoute(text: ModalRoute.of(context).settings.arguments);
+        },
+      },
     );
   }
 }
@@ -41,6 +49,54 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
+}
+
+class EchoRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    //获取路由参数
+    var args = ModalRoute.of(context).settings.arguments;
+    //...省略无关代码
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("New route"),
+      ),
+      body: Center(
+        child: Text(args),
+      ),
+    );
+  }
+}
+
+class TipRoute extends StatelessWidget {
+  TipRoute({
+    Key key,
+    @required this.text, // 接收一个text参数
+  }) : super(key: key);
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("提示"),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(18),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Text(text),
+              RaisedButton(
+                onPressed: () => Navigator.pop(context, "我是返回值"),
+                child: Text("返回"),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -75,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
+          // Column is also layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
           //
@@ -97,6 +153,21 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.display1,
+            ),
+            FlatButton(
+              child: Text("Open new new_page"),
+              textColor: Colors.blue,
+              onPressed: () {
+                Navigator.pushNamed(context, "new_page", arguments: "new_page");
+              },
+            ),
+            FlatButton(
+              child: Text("Open new tip_route"),
+              textColor: Colors.blue,
+              onPressed: () {
+                Navigator.pushNamed(context, "tip_route",
+                    arguments: "tip_route");
+              },
             ),
           ],
         ),
