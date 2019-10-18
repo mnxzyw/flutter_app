@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       // home: MyHomePage(title: 'Flutter Demo Home Page'),
       routes: {
         "/": (context) => MyHomePage(title: 'Flutter Demo Home Page'),
-        //注册首页路由
+        //注册首页路由.
         "new_page": (context) => EchoRoute(),
         "tip_route": (context) {
           return TipRoute(text: ModalRoute.of(context).settings.arguments);
